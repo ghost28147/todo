@@ -1,0 +1,11 @@
+{
+    "name": "foo/bar",
+    "type": "project",
+    "require": {
+        "twig/twig": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {"Todos\\": "src/"}
+    }
+
+}

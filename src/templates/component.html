@@ -1,0 +1,60 @@
+<header class="header">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" autofocus>
+</header>
+
+{% if itemsList.items is not empty %}
+<section class="main">
+
+    {% if itemsList.items > 0 %}
+        {% if itemsList.items|length == itemsList.completedItemsCount %}
+        <input id="toggle-all" class="toggle-all" type="checkbox" checked>
+        {% else %}
+        <input id="toggle-all" class="toggle-all" type="checkbox">
+        {% endif %}
+        <label for="toggle-all">Mark all as complete</label>
+    {% endif %}
+
+    <ul class="todo-list">
+
+        <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+        {% for item in itemsList.items %}
+        <li class="js-item{{item.done? ' js-item-completed completed'}}">
+            <div class="view">
+                {% if item.done %}
+                <input class="toggle" type="checkbox" checked>
+                {% else %}
+                <input class="toggle" type="checkbox">
+                {% endif %}
+                <label>{{ item.content }}</label>
+                <button class="destroy js-item-destroy"></button>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+<!-- This footer should hidden by default and shown when there are todos -->
+<footer class="footer">
+    <!-- This should be `0 items left` by default -->
+    <span class="todo-count">
+        <strong>{{itemsList.activeItemsCount}}</strong> item{{itemsList.activeItemsCount != 1? 's'}} left</span>
+
+    <ul class="filters">
+        <li>
+            <a class="selected" href="#/">All</a>
+        </li>
+        <li>
+            <a href="#/active">Active</a>
+        </li>
+        <li>
+            <a href="#/completed">Completed</a>
+        </li>
+    </ul>
+
+    {% if  itemsList.completedItemsCount > 0 %}
+    <button class="clear-completed">Clear completed</button>
+    {% endif %}
+
+</footer>
+{% endif %}
