@@ -33,3 +33,11 @@ TodoClient.prototype.markAll = function (yes) {
         }
     );
 };
+
+TodoClient.prototype.createItem = function (content) {
+    return jQuery.ajax({
+            url: this.endpoint + '?content=' + content,
+            method: "POST"
+        }
+    );
+};

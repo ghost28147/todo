@@ -4,12 +4,17 @@
 	var $todoList = $(".js-component");
 	var todoClient = new TodoClient();
 
-	$todoList.on("click", ".js-remove-item", function (event) {
-            removeItem( itemId(event) );
+
+    $todoList.on("keypress", ".js-new-item", function (ev) {
+        ev.keyCode === 13 && createItem(ev.target.value);
+    });
+
+	$todoList.on("click", ".js-remove-item", function (ev) {
+            removeItem( itemId(ev) );
 	});
 
-    $todoList.on("click", ".js-toggle-item", function (event) {
-            toggleItem( itemId(event) ); });
+    $todoList.on("click", ".js-toggle-item", function (ev) {
+            toggleItem( itemId(ev) ); });
 
     $todoList.on("click", ".js-remove-completed", removeCompleted);
 
@@ -49,6 +54,16 @@
         act(function() {
             todoClient
                 .markAll(yes)
+                .done(function(data) { updateState(data); })
+        })
+    }
+
+    function createItem(content) {
+        if (content.trim() === "") return;
+
+        act(function() {
+            todoClient
+                .createItem(content)
                 .done(function(data) { updateState(data); })
         })
     }
