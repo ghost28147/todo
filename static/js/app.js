@@ -4,26 +4,39 @@
 	var $todoList = $(".js-component");
 	var todoClient = new TodoClient();
 
+	var ENTER_KEY = 13;
 
-    $todoList.on("keypress", ".js-new-item", function (ev) {
-        ev.keyCode === 13 && createItem(ev.target.value);
-    });
+	var handlers = [
+        {
+            events: "keypress",
+            selector: ".js-new-item",
+            handler: function (e) {
+                e.keyCode === ENTER_KEY && createItem(e.target.value);
+            }
+        },
+        {
+            events: "click",
+            selector: ".js-remove-item",
+            handler: function (e) { removeItem( itemId(e) ); }
+        },
+        {
+            events: "click",
+            selector: ".js-toggle-item",
+            handler: function (e) { toggleItem( itemId(e) ); }
+        },
+        {
+            events: "click",
+            selector: ".js-remove-completed",
+            handler: removeCompleted
+        },
+        {
+            events: "click",
+            selector: ".js-toggle-all",
+            handler: function (e) { markAll(!e.target.checked); }
+        }];
 
-	$todoList.on("click", ".js-remove-item", function (ev) {
-            removeItem( itemId(ev) );
-	});
-
-    $todoList.on("click", ".js-toggle-item", function (ev) {
-            toggleItem( itemId(ev) ); });
-
-    $todoList.on("click", ".js-remove-completed", removeCompleted);
-
-    $todoList.on("click", ".js-toggle-all", function (event) {
-            markAll(!event.target.checked);
-    });
-
-    $todoList.on("click", ".js-toggle-all", function (event) {
-            markAll(!event.target.checked);
+	handlers.forEach( function(handler) {
+	    $todoList.on(handler.events, handler.selector, handler.handler);
     });
 
     function removeItem(id) {
